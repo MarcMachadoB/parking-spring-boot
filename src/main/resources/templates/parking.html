@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+
+</head>
+<body>
+    Posa la teva vista aquí...
+    2 formularis:
+    - input matrícula + botó aparcar
+    - input matrícula + botó desaparcar
+
+    - taula
+
+    <p th:if="${parking.preuMinut}" th:text="${parking.preuMinut}"></p>
+    Numero places ocupades: <p th:if="${parking.numPlacesOcupades != null}" th:text="${parking.numPlacesOcupades}"></p>
+
+    <fieldset>Aparca el teu vehicle:
+    <label for="aparcar"></label>
+    <form action="/aparcar" method="post">
+
+    Tipus <select name="tipus"> 
+        <option>Cotxe</option>
+        <option>Furgoneta</option>
+        <option>Moto</option>
+    </select>
+
+    <input type="text" id="matricula" name="matricula" required>
+    <button>Aparcar</button>
+    </form>
+    </fieldset>
+
+    <fieldset>Desaparca el teu vehicle:
+    <label for="desaparcar"></label>
+    <form action="/desaparcar" method="post">
+    <input type="text" id="matricula" name="matricula" required>
+    <button>Desparcar</button>
+    </form>
+    </fieldset>
+
+    Preu total a pagar: <p th:text="${preutotal}"></p>
+
+    <div class="parking-list">
+        <h2>Estat del parking</h2>
+        <table border="1" style="width: 100%; text-align: center;">
+            <tr>
+                <th>Codi</th>
+                <th>Planta</th>
+                <th>Estat</th>
+                <th>Matricula</th>
+                <th>Desaparcar</th>
+            </tr>
+
+            <tr th:each="pl : ${parking.places}">
+                <td th:text="${pl.numero}"></td>
+                <td th:text="${pl.ubicacio}"></td>
+                <td th:text="${pl.ocupada}"></td>
+                <td> <label th:if="${pl.ocupada}" th:text="${pl.vehicle.matricula}"></label>
+                </td>
+                <td>
+                    <a th:if="${pl.ocupada}" th:href="@{/desaparcar/{posicio}(posicio=${pl.numero})}">
+                        Desaparcar</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="barralateral">
+        <h2>Noticies</h2>
+        <table border="1" style="width: 100%; text-align: center;">
+            <tr th:each="nt : ${noticies}">
+                <td th:text="${nt.titol}"></td>
+                <td th:text="${nt.cos}"></td>
+            </tr>
+        </table>
+    </div>
+
+
+</body>
+</html>
